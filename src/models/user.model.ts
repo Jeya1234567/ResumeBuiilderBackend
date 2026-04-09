@@ -20,7 +20,7 @@ export const createUser = async (user: User) => {
 
 export const checkUserExists = async (user: User) => {
   const [s]: any = await pool.execute(
-    'CALL sp_get_user_by_email(?) ',
+    'CALL sp_get_user_by_email(?)',
     [user.email]
   );
 
