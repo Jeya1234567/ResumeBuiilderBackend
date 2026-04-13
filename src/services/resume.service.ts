@@ -1,4 +1,4 @@
-import { addEducationDetails, addExperienceDetails, addPersonalDetails, addProjectsDetails, addTechnicalDetails } from "../models/resume.model";
+import { addEducationDetails, addExperienceDetails, addPersonalDetails, addProjectsDetails, addTechnicalDetails, getTemplatesFromDB, getThemesFromDB } from "../models/resume.model";
 import { PersonalDetails,EducationDetails, ExperienceDetails, ProjectDetails } from "../types/resume.types";
 
 export const savePersonalDetails = async (details: PersonalDetails, userId: number) => {
@@ -49,3 +49,21 @@ export const saveTechnical = async (technicalDetails: string[], resumeId: number
         throw error;
     }
 };
+
+export const getTemplates = async () => {
+    try {
+        return await getTemplatesFromDB();
+    } catch (error) {
+        console.error('Get templates failed:', error);
+        throw error;
+    }
+}
+
+export const getThemes = async () => {
+    try {
+        return await getThemesFromDB();
+    } catch (error) {
+        console.error('Get themes failed:', error);
+        throw error;
+    }
+}

@@ -33,3 +33,18 @@ export interface ProjectDetails {
   description: string;
   tech: string;
 }
+
+export interface ThemeColor {
+  id: string;
+  theme:string;
+  label: string;
+  accent: string;
+  accent2: string;
+}
+
+export interface ResumeTemplate {
+  id: string;
+  template: string;
+  label: string;
+  style: 'classic' | 'modern' | 'minimal';
+}

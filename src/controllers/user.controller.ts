@@ -7,12 +7,18 @@ export const registerUser = async(req: Request, res: Response, next: NextFunctio
     try {
         const {email, password} = req.body;
         const token=await userService.registerUser({email, password} as User);
-       res.cookie('token',token, {
+       res.cookie('token',token.accessToken, {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
-        maxAge: 30 * 60 * 1000 // 30 minutes
-       }).status(201).json({
+        maxAge: 10 * 60 * 1000 // 10 minutes
+       }).cookie('refreshToken', token.refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+       })
+       .status(201).json({
         message: "User registered successfully"
        });
 
@@ -26,11 +32,16 @@ export const checkUser = async(req: Request, res: Response, next: NextFunction) 
         const {email, password} = req.body;
         console.log({email, password});
         const token = await userService.CheckUser({email, password} as User);   
-           res.cookie('token', token, {
+           res.cookie('token', token.accessToken, {
             httpOnly: true,
             secure: true,
             sameSite: 'strict',
-            maxAge: 30 * 60 * 1000 // 30 minutes
+            maxAge: 10 * 60 * 1000 // 10 minutes
+           }).cookie('refreshToken', token.refreshToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict',
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
            })
            .status(200).json({
                message: "User authenticated successfully"
@@ -41,15 +52,24 @@ export const checkUser = async(req: Request, res: Response, next: NextFunction) 
     }   
 }
 
-export const logout = (req: Request, res: Response) => {
+export const logout = async (req: Request, res: Response) => {
+
+    const userId = (req as any).user?.userId as number;
+    await userService.logout(userId.toString());
     res.clearCookie('token', {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'strict',
-    }).status(200).json({
-        message: "User logged out successfully"
-    });
-}   
+          httpOnly: true,
+          secure: true,
+          sameSite: 'strict',
+      })
+      .clearCookie('refreshToken', {
+          httpOnly: true,
+          secure: true,
+          sameSite: 'strict',
+      })
+      .status(200).json({
+          message: "User logged out successfully"
+      });
+}
 
 export const checkAuthentication = (req: Request, res: Response) => {
    try{

@@ -49,3 +49,24 @@ export const addTechnicalDetails = async (technicalDetails: string[], resumeId: 
           [resumeId, JSON.stringify(technicalDetails)] 
       );  
   };
+
+  export const getTemplatesFromDB = async () => {
+    try {
+        const [rows]: any = await pool.execute('CALL sp_get_templates()');
+        return rows[0];
+    } catch (error) {
+        console.error('Get templates from DB failed:', error);
+        throw error;
+    }
+};
+
+export const getThemesFromDB = async () => {
+    try {
+        const [rows]: any = await pool.execute('CALL sp_get_themes()');
+        console.log('Themes retrieved from DB:', rows[0]);
+        return rows[0];
+    } catch (error) {
+        console.error('Get themes from DB failed:', error);
+        throw error;
+    }
+};

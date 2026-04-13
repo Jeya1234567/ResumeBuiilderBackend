@@ -1,4 +1,4 @@
-import {createUser,checkUserExists} from '../models/user.model';
+import {createUser,checkUserExists, logoutUser} from '../models/user.model';
 import { User } from '../types/user.types';
 
 export const registerUser = async (user: User) => {
@@ -17,4 +17,12 @@ export const CheckUser = async (user:User)  => {
     } catch (error) {
         throw new Error(error instanceof Error ? error.message : 'Error checking user' );
     }   
+}
+
+export const logout = async (userId: string) => {
+    try {
+        await logoutUser(userId);
+    } catch (error) {
+        throw new Error('Error logging out user');
+    }
 }

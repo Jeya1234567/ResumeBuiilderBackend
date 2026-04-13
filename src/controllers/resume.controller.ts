@@ -73,3 +73,21 @@ export const saveTechnical = async (req: Request, res: Response, next: NextFunct
         next(error);
     }   
 };
+
+export const getTemplates = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const templates = await Details.getTemplates(); 
+        res.status(200).json({ data: templates });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const getThemes = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const themes = await Details.getThemes(); 
+        res.status(200).json({ data: themes });
+    } catch (error) {
+        next(error);
+    }
+};

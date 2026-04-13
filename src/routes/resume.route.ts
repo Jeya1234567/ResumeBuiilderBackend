@@ -3,7 +3,9 @@ import {authenticateToken as auth} from '../middleware/auth.middleware';
 import { Router } from 'express';
 
 const router = Router();
-
+    
+router.get('/templates', auth,ResumeController.getTemplates);
+router.get('/themes', auth,ResumeController.getThemes);
 router.post('/savepersonaldetails', auth, ResumeController.savePersonalDetails);
 router.post('/saveeducationdetails/:resumeId', auth, ResumeController.saveEducation);
 router.post('/saveexperiencedetails/:resumeId', auth, ResumeController.saveExperience);
